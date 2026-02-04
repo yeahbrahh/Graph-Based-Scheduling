@@ -1,32 +1,34 @@
-from rdflib import Graph
+from rdflib import FOAF, Graph
+from rdflib.namespace import RDF
+from rdflib import URIRef
 
 class_graph = Graph()
 room_graph = Graph()
 student_graph = Graph()
 
 class_graph.parse("./data/classes.ttl")
-
 room_graph.parse("./data/rooms.ttl")
-
 student_graph.parse("./data/students.ttl")
 
-print(len(class_graph))
+student_courses = {}
+classes = {}
 
-import pprint
+# get all classes a student is enrolled in
+for student in student_graph.subjects(predicate=URIRef("http://example.org/enrolledIn"), object=None):
+    student_courses[student] = list(student_graph.objects(subject=student, predicate=URIRef("http://example.org/enrolledIn")))
 
-for stmt in class_graph:
-    pprint.pprint(stmt)
+for k, v in student_courses.items():
+    print(k, v)
 
-for _ in range (5):
-    print()
+# get all students in a class
 
-for stmt in room_graph:
-    pprint.pprint(stmt)
+for s, p, o in class_graph:
+    print(p)
 
-for _ in range(5):
-    print()
+predicates = [
+    URIRef("http://example.org/hasMinimumRoomCapacity"),
+    URIRef("http://example.org/examDuration")
+]
 
-for stmt in student_graph:
-    pprint.pprint(stmt)
-
-print()
+for c in class_graph.subjects():
+    classes[c] = ()
