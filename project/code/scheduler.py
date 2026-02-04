@@ -14,8 +14,8 @@ print(len(class_graph))
 
 import pprint
 
-for stmt in class_graph:
-    pprint.pprint(stmt)
+# for stmt in class_graph:
+#     pprint.pprint(stmt)
 
 for _ in range (5):
     print()
