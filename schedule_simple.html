@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Exam Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .room {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .room-header {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2196F3;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .exam {
+            margin: 15px 0;
+            padding: 15px;
+            border-left: 4px solid #ddd;
+            background: #fafafa;
+        }
+        .exam.green { border-left-color: #4CAF50; }
+        .exam.yellow { border-left-color: #FF9800; }
+        .exam.red { border-left-color: #f44336; }
+        .time {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+        .class-name {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+        .students {
+            font-size: 13px;
+            color: #888;
+        }
+        .legend {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+            font-size: 14px;
+        }
+        .color-box {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+            border-radius: 3px;
+        }
+        .summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .summary h2 {
+            color: #333;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎓 Final Exam Schedule</h1>
+    
+    <div class="legend">
+        <strong>Legend:</strong>
+        <div class="legend-item">
+            <span class="color-box" style="background: #4CAF50;"></span>
+            Less than 70% full
+        </div>
+        <div class="legend-item">
+            <span class="color-box" style="background: #FF9800;"></span>
+            70-90% full
+        </div>
+        <div class="legend-item">
+            <span class="color-box" style="background: #f44336;"></span>
+            Over 90% full
+        </div>
+    </div>
+
+    <div class="room">
+        <div class="room-header">📍 Engineering 201 (Capacity: 100)</div>
+
+        <div class="exam yellow">
+            <div class="time">Mon, May 11 at 08:00 AM - 09:30 AM (1.5 hours)</div>
+            <div class="class-name"><strong>MATH101:</strong> College Algebra</div>
+            <div class="students">👥 71/100 students (71% full)</div>
+        </div>
+
+        <div class="exam green">
+            <div class="time">Mon, May 11 at 09:30 AM - 11:30 AM (2.0 hours)</div>
+            <div class="class-name"><strong>PSY330:</strong> Cognitive Psychology</div>
+            <div class="students">👥 51/100 students (51% full)</div>
+        </div>
+
+        <div class="exam green">
+            <div class="time">Mon, May 11 at 11:30 AM - 01:30 PM (2.0 hours)</div>
+            <div class="class-name"><strong>PHYS101:</strong> Physics I</div>
+            <div class="students">👥 53/100 students (53% full)</div>
+        </div>
+
+        <div class="exam green">
+            <div class="time">Tue, May 12 at 08:00 AM - 09:30 AM (1.5 hours)</div>
+            <div class="class-name"><strong>MATH101:</strong> College Algebra</div>
+            <div class="students">👥 10/100 students (10% full)</div>
+        </div>
+
+        <div class="exam green">
+            <div class="time">Tue, May 12 at 09:30 AM - 11:30 AM (2.0 hours)</div>
+            <div class="class-name"><strong>PSY330:</strong> Cognitive Psychology</div>
+            <div class="students">👥 28/100 students (28% full)</div>
+        </div>
+
+        <div class="exam green">
+            <div class="time">Tue, May 12 at 11:30 AM - 01:30 PM (2.0 hours)</div>
+            <div class="class-name"><strong>PHYS101:</strong> Physics I</div>
+            <div class="students">👥 21/100 students (21% full)</div>
+        </div>
+
+        <div class="exam green">
+            <div class="time">Wed, May 13 at 08:00 AM - 10:00 AM (2.0 hours)</div>
+            <div class="class-name"><strong>PHYS101:</strong> Physics I</div>
+            <div class="students">👥 1/100 students (1% full)</div>
+        </div>
+    </div>
+
+    <div class="room">
+        <div class="room-header">📍 Main Lecture Hall (Capacity: 125)</div>
+
+        <div class="exam yellow">
+            <div class="time">Mon, May 11 at 08:00 AM - 10:00 AM (2.0 hours)</div>
+            <div class="class-name"><strong>CS101:</strong> Intro to Computer Science</div>
+            <div class="students">👥 109/125 students (87% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Mon, May 11 at 10:00 AM - 12:00 PM (2.0 hours)</div>
+            <div class="class-name"><strong>MATH240:</strong> Linear Algebra</div>
+            <div class="students">👥 108/125 students (86% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Mon, May 11 at 12:00 PM - 03:00 PM (3.0 hours)</div>
+            <div class="class-name"><strong>MATH350:</strong> Probability Theory</div>
+            <div class="students">👥 107/125 students (86% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Mon, May 11 at 03:00 PM - 04:30 PM (1.5 hours)</div>
+            <div class="class-name"><strong>HIST110:</strong> World History</div>
+            <div class="students">👥 105/125 students (84% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Mon, May 11 at 04:30 PM - 07:30 PM (3.0 hours)</div>
+            <div class="class-name"><strong>CS220:</strong> Data Structures</div>
+            <div class="students">👥 102/125 students (82% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Tue, May 12 at 12:00 PM - 04:00 PM (4.0 hours)</div>
+            <div class="class-name"><strong>CHEM250:</strong> Organic Chemistry I</div>
+            <div class="students">👥 98/125 students (78% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Tue, May 12 at 04:00 PM - 05:30 PM (1.5 hours)</div>
+            <div class="class-name"><strong>PSY101:</strong> Introduction to Psychology</div>
+            <div class="students">👥 97/125 students (78% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Tue, May 12 at 05:30 PM - 07:30 PM (2.0 hours)</div>
+            <div class="class-name"><strong>CHEM101:</strong> General Chemistry</div>
+            <div class="students">👥 95/125 students (76% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Thu, May 14 at 08:00 AM - 10:00 AM (2.0 hours)</div>
+            <div class="class-name"><strong>HIST305:</strong> European History</div>
+            <div class="students">👥 93/125 students (74% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Thu, May 14 at 10:00 AM - 01:00 PM (3.0 hours)</div>
+            <div class="class-name"><strong>ENG410:</strong> Shakespeare Studies</div>
+            <div class="students">👥 93/125 students (74% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Thu, May 14 at 01:00 PM - 04:00 PM (3.0 hours)</div>
+            <div class="class-name"><strong>ECON330:</strong> Game Theory</div>
+            <div class="students">👥 93/125 students (74% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Thu, May 14 at 04:00 PM - 06:00 PM (2.0 hours)</div>
+            <div class="class-name"><strong>PHYS220:</strong> Modern Physics</div>
+            <div class="students">👥 92/125 students (74% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Thu, May 14 at 06:00 PM - 08:00 PM (2.0 hours)</div>
+            <div class="class-name"><strong>ENG101:</strong> English Composition</div>
+            <div class="students">👥 91/125 students (73% full)</div>
+        </div>
+    </div>
+
+    <div class="room">
+        <div class="room-header">📍 Science Auditorium (Capacity: 125)</div>
+
+        <div class="exam yellow">
+            <div class="time">Wed, May 13 at 12:00 PM - 02:00 PM (2.0 hours)</div>
+            <div class="class-name"><strong>ECON101:</strong> Microeconomics</div>
+            <div class="students">👥 90/125 students (72% full)</div>
+        </div>
+
+        <div class="exam yellow">
+            <div class="time">Wed, May 13 at 02:00 PM - 05:00 PM (3.0 hours)</div>
+            <div class="class-name"><strong>STAT410:</strong> Statistical Inference</div>
+            <div class="students">👥 89/125 students (71% full)</div>
+        </div>
+
+        <div class="exam green">
+            <div class="time">Wed, May 13 at 05:00 PM - 08:00 PM (3.0 hours)</div>
+            <div class="class-name"><strong>CS310:</strong> Algorithms</div>
+            <div class="students">👥 83/125 students (66% full)</div>
+        </div>
+
+        <div class="exam green">
+            <div class="time">Wed, May 13 at 08:00 PM - 10:00 PM (2.0 hours)</div>
+            <div class="class-name"><strong>STAT200:</strong> Applied Statistics</div>
+            <div class="students">👥 83/125 students (66% full)</div>
+        </div>
+    </div>
+
+    <div class="summary">
+        <h2>📊 Summary</h2>
+        <p><strong>Total exam sessions:</strong> 24</p>
+        <p><strong>Total student-exam assignments:</strong> 1863</p>
+        <p><strong>Rooms used:</strong> 3 out of 8</p>
+    </div>
+</body>
+</html>
