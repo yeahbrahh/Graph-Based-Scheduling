@@ -50,20 +50,21 @@ for c in classes.items():
 
 
 # get the available rooms plus their capacity and available time slots
-for subject in room_graph.subjects():
-    if subject.startswith(EX.roomCapacity):
-        _, class_room = split_uri(subject)
-        room_cap = room_graph.value(
-            subject=subject, predicate=URIRef(EX.roomCapacity))
-        temp = list(room_graph.objects(
-            subject=subject, predicate=URIRef(EX.hasAvailability)))
-        available_slots = []
-        for p in temp:
-            _, slot = split_uri(p)
-            slot = slot[1:]
-            available_slots.append(slot)
-        min_room_caps_and_availability[class_room] = (
-            int(room_cap.toPython()), available_slots)
+for room, _, room_cap in room_graph.triples((None, URIRef(EX.roomCapacity), None)):
+    _, room_name = split_uri(room)
+
+    slot_uris = room_graph.objects(room, URIRef(EX.hasAvailability))
+    available_slots = []
+
+    for s in slot_uris:
+        _, slot = split_uri(s)
+        available_slots.append(slot)
+
+    min_room_caps_and_availability[room_name] = (
+        int(room_cap.toPython()),
+        available_slots
+    )
+
 
 for r in min_room_caps_and_availability.items():
     print()
@@ -75,16 +76,15 @@ for r in min_room_caps_and_availability.items():
 
 # define the slots
 for subject in room_graph.subjects():
-    if subject.startswith(EX._Time_slot):
+    if str(subject).startswith(str(EX._Time_slot)):
         _, slot = split_uri(subject)
-        slot = slot[1:]
-        start = room_graph.value(subject=subject, predicate=URIRef(EX.availableFrom))
-        end = room_graph.value(subject=subject, predicate=URIRef(EX.availableUntil))
+        start_lit = room_graph.value(subject=subject, predicate=URIRef(EX.availableFrom))
+        end_lit = room_graph.value(subject=subject, predicate=URIRef(EX.availableUntil))
 
-        slot_length = end.toPython() - start.toPython()
-        slot_hours = slot_length.total_seconds() / 3600.0
-        times = (start.toPython(), end.toPython(), slot_hours)
-        time_slot_defs[slot] = times
+        start = start_lit.toPython()
+        end = end_lit.toPython()
+        slot_hours = (end - start).total_seconds() / 3600.0
+        time_slot_defs[slot] = (start, end, slot_hours)
 
 
 for item in time_slot_defs.items():
@@ -105,38 +105,45 @@ def all_exam_windows(slot_start, slot_end, exam_duration, step_hours=1):
         
 
 potential_rooms = {}
+exam_perms = {}
 
-# narrow down potential rooms by capacity
-# def schedule_backtracking(key: str) -> dict:
-for c in classes:
-    min_cap, exam_duration = classes[c]
-    candidates = set()
-    for room, (room_cap, _) in min_room_caps_and_availability.items():
-        if room_cap >= min_cap:
-            candidates.add(room)
-    potential_rooms[c] = candidates
-
-    for room in potential_rooms[c]:
+# get all possible exam times for each time slot
+for class_code, (min_cap, exam_duration) in classes.items():
+    for room, (room_cap, available_slots) in min_room_caps_and_availability.items():
+        if room_cap < min_cap:
+            continue
         for slot, (slot_start, slot_end, slot_hours) in time_slot_defs.items():
-           possible_times = all_exam_windows(
-               slot_start,
-               slot_end,
-               exam_duration,
-               step_hours=1
-           )
-
-           for start, end in possible_times:
-                print(f"Course: {c}, Exam Duration: {exam_duration}/hrs, Potential Room: {room}, Time Slot: {slot}, Total Slot Length: {slot_hours}/hrs, Possible Exam Time: ({start} to {end})")
-    
-    
-    # make sure possible exam time is not already taken
-    
-    reserved = {}
-
-
-    # check for student conflicts (a student has two exam simultaneously)
-
+            if slot not in available_slots:
+                continue
+            for start, end in all_exam_windows(slot_start, slot_end, exam_duration):
+                  print(
+                    f"Course: {class_code}, "
+                    f"Room: {room}, "
+                    f"Slot: {slot}, "
+                    f"Duration: {exam_duration} hrs, "
+                    f"Window: ({start} → {end})"
+                )
     
 
-    # course -> exam time
-    # exam time -> all students in course
+
+
+
+
+
+    
+    
+    # def schedule_backtrack(assignment, classes_to_schedule):
+    #     if not classes_to_schedule:
+    #         return assignment;
+    #     current_class = classes_to_schedule[0]
+    #     remaining_classes = classes_to_schedule[1]
+
+    #     for option in get_all_possible_options(current_class):
+    #         if is_consistent(current_class, option, assignment):
+    #             assignment[current_class] = option
+    #             result = backtrack(assignment, remaining_classes)
+                
+    #             if result is not None:
+    #                 return result
+    #             del assignment[current_class]
+    #     return None
