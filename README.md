@@ -8,7 +8,7 @@ outputs `schedule.json` upon running.
 
 `streamlit run app.py` to run the GUI
 
-This program uses a recursive backtracking algorithm to schedule the exams. It works by narrowing down candidate by conflict until a fully valid assignment can be made.
+This program uses a recursive backtracking algorithm to schedule the exams. It works by narrowing down candidates by conflict until a fully valid assignment can be made.
 
 Our potential conflicts are: 
 - There can be no one student who has two exams scheduled simultaneously
@@ -37,7 +37,7 @@ ____________________________________
 
 ** Disclaimer: **
 
-The frontend of this wep app was written using AI, the backend (parsing, scheduling, etc.) was written by us. We may choose to increment upon this project in the future but wanted to have something nice for our upcoming presentation.
+The frontend of this wep app was written using AI, the backend (parsing, scheduling, etc.) was written by us. We may choose to increment upon this project in the future but we wanted to have something nice for our upcoming presentation.
 
 
 
