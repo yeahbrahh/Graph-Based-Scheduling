@@ -1,6 +1,8 @@
 ## Semantic Graph Based Scheduling
 
-`python scheduler.py` or `python3 scheduler.py` depending on your version of Python which outputs `schedule.json` upon running.
+`python scheduler.py` or `python3 scheduler.py` depending on your version of Python
+
+outputs `schedule.json` upon running.
 
 `pip install streamlit` to install dependencies
 
