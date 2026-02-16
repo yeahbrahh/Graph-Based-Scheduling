@@ -3,12 +3,13 @@ from datetime import timedelta
 from rdflib import Graph, Namespace, URIRef
 from rdflib.namespace import split_uri
 
+
 class Scheduler:
     def __init__(self):
         self.EX = Namespace("http://example.org/")
         self.SCHEMA = Namespace("http://schema.org/")
         self.RDF = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-        
+
         self.classes = {}
         self.student_courses = {}
         self.min_room_caps_and_availability = {}
@@ -36,21 +37,28 @@ class Scheduler:
 
         for c in class_graph.subjects():
             _, class_code = split_uri(c)
-            min_room_cap = class_graph.value(subject=c, predicate=URIRef(self.EX.hasMinimumRoomCapacity))
-            exam_duration = class_graph.value(subject=c, predicate=URIRef(self.EX.examDuration))
-            self.classes[class_code] = (int(min_room_cap.toPython()), float(exam_duration.toPython()))
+            min_room_cap = class_graph.value(
+                subject=c, predicate=URIRef(self.EX.hasMinimumRoomCapacity))
+            exam_duration = class_graph.value(
+                subject=c, predicate=URIRef(self.EX.examDuration))
+            self.classes[class_code] = (
+                int(min_room_cap.toPython()), float(exam_duration.toPython()))
 
         for room, _, room_cap in room_graph.triples((None, URIRef(self.EX.roomCapacity), None)):
             _, room_name = split_uri(room)
-            slot_uris = room_graph.objects(room, URIRef(self.EX.hasAvailability))
+            slot_uris = room_graph.objects(
+                room, URIRef(self.EX.hasAvailability))
             available_slots = [split_uri(s)[1] for s in slot_uris]
-            self.min_room_caps_and_availability[room_name] = (int(room_cap.toPython()), available_slots)
+            self.min_room_caps_and_availability[room_name] = (
+                int(room_cap.toPython()), available_slots)
 
         for subject in room_graph.subjects():
             if str(subject).startswith(str(self.EX._Time_slot)):
                 _, slot = split_uri(subject)
-                start_lit = room_graph.value(subject=subject, predicate=URIRef(self.EX.availableFrom))
-                end_lit = room_graph.value(subject=subject, predicate=URIRef(self.EX.availableUntil))
+                start_lit = room_graph.value(
+                    subject=subject, predicate=URIRef(self.EX.availableFrom))
+                end_lit = room_graph.value(
+                    subject=subject, predicate=URIRef(self.EX.availableUntil))
                 start = start_lit.toPython()
                 end = end_lit.toPython()
                 slot_hours = (end - start).total_seconds() / 3600.0
@@ -88,7 +96,8 @@ class Scheduler:
         options = []
         min_cap, duration = self.classes[course_code]
         for room, (room_cap, available_slots) in self.min_room_caps_and_availability.items():
-            if room_cap < min_cap: continue
+            if room_cap < min_cap:
+                continue
             for slot in available_slots:
                 s_start, s_end, _ = self.time_slot_defs[slot]
                 for window in self.all_exam_windows(s_start, s_end, duration):
@@ -100,7 +109,6 @@ class Scheduler:
             return assignment
         current_class = classes_to_schedule[0]
         remaining_classes = classes_to_schedule[1:]
-
         for option in self.get_options(current_class):
             if self.is_consistent(current_class, option, assignment):
                 assignment[current_class] = option
@@ -114,23 +122,23 @@ class Scheduler:
 def run_and_export_json(scheduler):
     scheduler.load_data()
     all_classes = list(scheduler.classes.keys())
-    
+
     final_schedule = scheduler.schedule_backtrack({}, all_classes)
-    
+
     if final_schedule:
         structured_json = {}
-        
+
         for i, (course_code, details) in enumerate(final_schedule.items(), 1):
             group_key = f"group_{i:04d}"
-            
+
             start_time, end_time = details['window']
             time_slot_str = f"{start_time.isoformat()} - {end_time.isoformat()}"
-            
+
             student_list = [
-                str(scheduler.EX[f"_{name}"]) 
+                str(scheduler.EX[f"_{name}"])
                 for name in scheduler.course_to_students.get(course_code, [])
             ]
-            
+
             structured_json[group_key] = {
                 "students": student_list,
                 "room": {
@@ -139,17 +147,18 @@ def run_and_export_json(scheduler):
                 },
                 "class_iri": str(scheduler.EX[course_code])
             }
-        
+
         return json.dumps(structured_json, indent=4)
     else:
         return json.dumps({"error": "No valid schedule found"}, indent=4)
 
+
 if __name__ == "__main__":
     s = Scheduler()
-    
+
     json_output = run_and_export_json(s)
-    
+
     print(json_output)
-    
+
     with open("schedule.json", "w") as f:
         f.write(json_output)
