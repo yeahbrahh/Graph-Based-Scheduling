@@ -33,7 +33,7 @@ def schedule_backtrack(self, assignment, classes_to_schedule):
 ```
 ____________________________________
 ### screenshot of web app:
-<img width="832" height="864" alt="brave_screenshot_localhost (1)" src="https://github.com/user-attachments/assets/a444e4db-6925-4e90-b174-4bd4152bb1af" />
+<img width="1914" height="1005" alt="student_schedule" src="https://github.com/user-attachments/assets/088755c0-dded-40f2-a4c3-1bcb391ef5d5" />
 
 ** Disclaimer: **
 
