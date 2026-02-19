@@ -3,7 +3,6 @@ from datetime import timedelta
 from rdflib import Graph, Namespace, URIRef
 from rdflib.namespace import split_uri
 
-
 class Scheduler:
     def __init__(self):
         self.EX = Namespace("http://example.org/")
@@ -70,7 +69,7 @@ class Scheduler:
                     self.course_to_students[c] = set()
                 self.course_to_students[c].add(student)
 
-    def all_exam_windows(self, slot_start, slot_end, exam_duration, step_hours=1):
+    def all_exam_windows(self, slot_start, slot_end, exam_duration, step_hours=0.166):
         windows = []
         current = slot_start
         while current + timedelta(hours=exam_duration) <= slot_end:
@@ -82,10 +81,12 @@ class Scheduler:
         start_new, end_new = option['window']
         room_new = option['room']
         students_new = self.course_to_students.get(course, set())
+        gap = timedelta(minutes=10)
 
         for other_course, other_val in assignment.items():
             start_other, end_other = other_val['window']
-            if start_new < end_other and start_other < end_new:
+            
+            if start_new < (end_other + gap) and start_other < (end_new + gap):
                 if room_new == other_val['room']:
                     return False
                 if students_new.intersection(self.course_to_students.get(other_course, set())):
@@ -118,27 +119,18 @@ class Scheduler:
                 del assignment[current_class]
         return None
 
-
 def run_and_export_json(scheduler):
     scheduler.load_data()
     all_classes = list(scheduler.classes.keys())
-
     final_schedule = scheduler.schedule_backtrack({}, all_classes)
 
     if final_schedule:
         structured_json = {}
-
         for i, (course_code, details) in enumerate(final_schedule.items(), 1):
             group_key = f"group_{i:04d}"
-
             start_time, end_time = details['window']
             time_slot_str = f"{start_time.isoformat()} - {end_time.isoformat()}"
-
-            student_list = [
-                str(scheduler.EX[f"_{name}"])
-                for name in scheduler.course_to_students.get(course_code, [])
-            ]
-
+            student_list = [str(scheduler.EX[f"_{name}"]) for name in scheduler.course_to_students.get(course_code, [])]
             structured_json[group_key] = {
                 "students": student_list,
                 "room": {
@@ -147,18 +139,13 @@ def run_and_export_json(scheduler):
                 },
                 "class_iri": str(scheduler.EX[course_code])
             }
-
         return json.dumps(structured_json, indent=4)
     else:
         return json.dumps({"error": "No valid schedule found"}, indent=4)
 
-
 if __name__ == "__main__":
     s = Scheduler()
-
     json_output = run_and_export_json(s)
-
     print(json_output)
-
     with open("schedule.json", "w") as f:
         f.write(json_output)
